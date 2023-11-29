@@ -1,0 +1,170 @@
+% arara: xelatex
+% arara: biber
+% arara: xelatex
+% arara: xelatex
+%%% arara: clean: { files: [riemann_main.log,riemann_main.aux,riemann_main.blg,riemann_main.bbl,riemann_main.bcf,riemann_main.toc,riemann_main.run.xml] }
+%%% arara: lmkclean
+%%% arara: pdflatex
+%%% arara: pdflatex
+%%% % arara: lmkclean
+%%% zsh> setopt no_nomatch
+
+% Chandra Images by Category: Supernovas & Supernova Remnants
+% https://chandra.harvard.edu/photo/category/snr.html
+
+\documentclass[a4paper,12pt]{extarticle}
+
+\input{head}
+
+
+\makeatletter
+\@ifundefined{c@basement}{
+  \newcounter{basement}
+  \setcounter{basement}{0} % 0 --- hide basement;
+                            % 1 --- show basement
+}{}
+\makeatother
+
+\hyphenation{
+  smooth-ed
+  par-tic-le
+  hy-dro-dy-nam-ics
+}
+
+
+%%% Add bibliography
+\addbibresource{refs_hd.bib}
+
+\begin{document}
+
+%%% article title
+\title{\large
+ Заметки про задачу о распаде произвольного разрыва (задача Римана)
+}
+
+\author{Илья~Заворохин, П.В.~Бакланов}
+
+\date{\today}
+
+\maketitle
+
+\tableofcontents
+
+%\newpage
+
+%%%%% BEGIN
+%------------------------------------------
+%\section*{TODO}
+
+%\begin{enumerate}
+
+%\end{enumerate}
+
+
+%------------------------------------------
+
+\section{Введение}
+
+Цель работы - знакомство с физикой ударных волн, их формирование и эволюция.
+Исследовать некоторые частные физические модели, допускающие аналитические решения. 
+Получить решения численными методами и сравнить с аналитическими выражениями. 
+
+%----------------------------
+\section{Формулировка задачи Римана}
+
+Рассматривается одномерная задача: 
+в момент $t=0$ в трубе находится идеальный газ, разделённый  непроницаемой жёсткой перегородкой. 
+Слева от перегородки в области~1 и  справа~2 состояния газа произвольны и независимы друг от друга. 
+
+\todo{Нарисовать и вставить картинку с начальной конфигурацией $t=0$}
+
+Требуется найти состояние газа после того как моментально уберут перегородку. 
+Или другими словами, описать как будут меняться от времени свойства газа: формулы, табличный вид, графики. 
+
+Заметки на память можно вставлять с помощью команды:
+\begin{verbatim}
+	\iz{какой-то текст заметки}
+\end{verbatim}
+ 
+Это будет выглядеть так: 	
+\iz{какой-то текст заметки}
+
+%----------------------------
+\section{Решение задачи Римана}
+
+Выпишем систему уравнений газодинамики, определяющих изменение свойств газа: плотность, скорость и давление \cite{zr1968}.
+
+\begin{align} 
+	\frac{\partial \rho}{\partial t} + div(\rho \vecxu) = 0  \label{eq:continuity}\\
+	%
+	\frac{\partial  \vecxu}{\partial t} + \left(\vecxu \nabla \right)\vecxu = -\frac{1}{\rho}\nabla P  \label{eq:euler}	\\
+	%
+	\todo{Вставить закон сохр. энергии}  \label{eq:energy}
+\end{align}
+
+Показатель адиабаты $\gamma = 1.4$.
+
+Выведем соотношения Ранкина--Гюгонио
+
+	\todo{вывод}
+
+
+%----------------------------
+\section{Автомодельное решение }
+
+
+
+\pb{Полезно вставить картинку из \cite{godunov1976}}
+
+%
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.9\textwidth]{godunov1976_fig13-1}
+	\caption{
+		Рисунок из \cite{godunov1976}, иллюстрирующий возможные автомодельные случаи об эволюции разрыва.
+	}
+	\label{fig:godunov1976_fig13-1}
+\end{figure}
+
+
+%----------------------------
+\section{Задача Сода }
+
+Исследуем задачу Сода \cite{sod1978}.
+
+\todo{Запрограммировать аналитическое решение, см цель \url{https://github.com/MathZIVota/Simulation-of-radio-emission-from-supernova-/issues/4}}
+
+\todo{Написать численный решатель этой задачи} 
+
+
+%\clearpage
+%\sloppy
+\printbibliography
+
+%-------------------------------------------------
+
+\ifnum \value{basement}=1
+
+\newpage
+
+
+\section*{Не используемые картинки}
+
+
+%
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.9\textwidth]{spectrum_sn2018aoq_35_day}
+	\caption{
+		Наблюдаемый спектр сверхновой SN2018aoq
+		на 25~апреля~2018 года (35-й день после взрыва) -- синяя линия.
+		Соответствующие модельные спектры
+		\tardis -- оранжевая линия.
+		M1 -- зелёная линия.
+	}
+	\label{fig:spectrum_sn2018aoq_35_day}
+\end{figure}
+
+\fi
+
+\end{document}
