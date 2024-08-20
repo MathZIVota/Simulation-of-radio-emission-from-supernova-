@@ -43,8 +43,6 @@ def Plot(n, axes, m):
             else:
                 axes[j, i].set_ylim(-0.1, 1.1)
             
-            axes[j, i].plot([-1, -1],[2, 0], "black", linewidth = 3)
-            axes[j, i].plot([1, 1],[2, 0], "black", linewidth = 3)
             axes[j, i].grid()
             
             if(i == 0):
@@ -55,7 +53,7 @@ def Plot(n, axes, m):
                 
         y = [0, 0.2, 0.4, 0.6, 0.8, 1]#[x/2 for x in range(0,3)]
         plt.setp(axes[0:3], yticks = y)
-        plt.setp(axes[3], yticks = [0, 0.75, 1, 1.25, 1.5])
+        plt.setp(axes[3], yticks = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5])
         plt.setp(axes[4], yticks = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2.0])
         axes[0,0].set_title('t = 0 sec', fontsize=12, fontweight='bold')
 
