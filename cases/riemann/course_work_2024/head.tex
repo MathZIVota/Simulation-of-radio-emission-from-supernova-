@@ -80,6 +80,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{wrapfig}
 \usepackage{pdfpages}
+\usepackage[normalem]{ulem}
 
 \graphicspath{{img/}} % Пути к изображениям
 
@@ -197,8 +198,13 @@ backref=true
 \newcommand\vecxu{\vecx{u}}
 
 
+\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
 
 \newcommand{\pb}[1]{\textbf{\color{magenta}PB: #1}}
+%\newcommand{\pbc}[2]{\textbf{\stkout{#1} \pb{#2}}}
+\newcommand{\pbc}[2]{\textbf{\stkout{#1}\color{magenta}#2}}
+\newcommand{\pbd}[1]{\textbf{\stkout{#1}}}
+
 \newcommand{\iz}[1]{\textbf{\color{orange}IZ: #1}}
 
 \newcommand\nifsx{$^{56}$Ni\xspace}
