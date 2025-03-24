@@ -10,9 +10,6 @@ void Solver::Calc_2(size_t k, size_t i, Tube &tube){
     tube.rho[k][i] = rho_left*pow(p_3/p_left, 1/tube.gamma);
     tube.p[k][i] = p_3;
     tube.u[k][i] = u_3;
-    int a, v;
-    a = 0;
-    v = 1;
 }
 
 void Solver::Calc_3(size_t k, size_t i, Tube &tube){
