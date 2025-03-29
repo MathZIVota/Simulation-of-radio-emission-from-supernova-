@@ -1,19 +1,27 @@
-.PHONY: program clean
+# Compiler and flags
+CXX = g++
+CXXFLAGS = -Wall -Wextra -std=c++17
 
-program: main.o AnalyticSolver.o loadTofile.o Tube.o
-	g++ main.o AnalyticSolver.o loadTofile.o Tube.o -o program 
+# Source files
+SRCS = main.cpp Nonlinear_sol_Newton.cpp AnalyticSolver.cpp loadTofile.cpp Tube.cpp
 
-Tube.o: Tube.cpp Tube.h
-	g++ -c Tube.cpp
+# Object files (automatically generated from source files)
+OBJS = $(SRCS:.cpp=.o)
 
-loadTofile.o: loadTofile.cpp Tube.h
-	g++ -c loadTofile.cpp
+# Executable name
+TARGET = program
 
-AnalyticSolver.o: AnalyticSolver.cpp AnalyticSolver.h
-	g++ -c AnalyticSolver.cpp
+# Default rule: build the executable
+all: $(TARGET)
 
-main.o: main.cpp 
-	g++ -c main.cpp
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET)
+
+# Rule to compile source files into object files
+%.o: %.cpp %.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm *.o program
+	rm -f $(OBJS) $(TARGET)
+
+.PHONY: clean

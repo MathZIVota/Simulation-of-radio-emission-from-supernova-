@@ -1,0 +1,51 @@
+all: program clean
+TARGET = program
+
+program: main.o Nonlinear_sol_Newton.o AnalyticSolver.o loadTofile.o Tube.o 
+	g++ main.o Nonlinear_sol_Newton.o AnalyticSolver.o loadTofile.o Tube.o -o program 
+
+Nonlinear_sol_Newton.o: Nonlinear_sol_Newton.cpp Nonlinear_sol_Newton.hpp
+	g++ -c Nonlinear_sol_Newton.cpp
+
+Tube.o: Tube.cpp Tube.hpp
+	g++ -c Tube.cpp
+
+loadTofile.o: loadTofile.cpp Tube.hpp
+	g++ -c loadTofile.cpp
+
+AnalyticSolver.o: AnalyticSolver.cpp AnalyticSolver.hpp
+	g++ -c AnalyticSolver.cpp
+
+main.o: main.cpp 
+	g++ -c main.cpp
+
+clean:
+	rm *.o program
+
+
+# Compiler and flags
+CXX = g++
+CXXFLAGS = -Wall -Wextra -std=c++17
+
+# Source files
+SRCS = main.cpp nonlinear_shock.cpp
+
+# Object files (automatically generated from source files)
+OBJS = $(SRCS:.cpp=.o)
+
+# Executable name
+TARGET = program
+
+# Default rule: build the executable
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+
+# Rule to compile source files into object files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Clean rule: remove object files and the executable
+clean:
+	rm -f $(OBJS) $(TARGET)
+
+.PHONY: clean # Declares 'clean' as not representing a file

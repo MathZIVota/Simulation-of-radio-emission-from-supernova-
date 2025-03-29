@@ -1,4 +1,4 @@
-#include"Tube.h"
+#include"Tube.hpp"
 
 void Tube::Initial_data(vector<double> data_left = {1, 0, 1}, vector<double> data_right = {0.125, 0, 0.1}, double Gamma = 1.4){
     //data = {p, u, rho}

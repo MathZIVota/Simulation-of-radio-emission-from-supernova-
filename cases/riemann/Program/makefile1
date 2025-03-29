@@ -1,0 +1,10 @@
+.PHONY: program clean
+
+program: Nonlinear_sol_Newton.o 
+	g++ Nonlinear_sol_Newton.o  -o program 
+
+Nonlinear_sol_Newton.o: Nonlinear_sol_Newton.cpp Nonlinear_sol_Newton.hpp
+	g++ -c Nonlinear_sol_Newton.cpp
+
+clean:
+	rm *.o program
