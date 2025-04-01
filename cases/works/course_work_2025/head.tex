@@ -1,0 +1,227 @@
+\RequirePackage[l2tabu,orthodox]{nag} % Раскомментировав, можно в логе получать рекомендации относительно правильного использования пакетов и предупреждения об устаревших и нерекомендуемых пакетах
+% \documentclass[a4paper,14pt]{extarticle}
+\usepackage[left=1.5 cm,right=1.6cm,top=1.5cm,bottom=2.5cm]{geometry}
+
+%%% Mathematical packages %%%
+\usepackage{amsthm,amsmath,amscd} % Математические дополнения от AMS
+\usepackage{amsfonts,amssymb}     % Математические дополнения от AMS
+\usepackage{mathtools}            % Добавляет окружение multlined
+\usepackage{mathtext}
+\usepackage{cancel}
+
+\usepackage{textcomp}
+
+\RequirePackage{ifxetex, ifluatex}
+\ifxetex
+  % https://tex.stackexchange.com/a/38631
+  \renewcommand{\mathbf}{\ensuremath{\symbf}}
+  \usepackage{unicode-math}
+  \usepackage{polyglossia}                        % Поддержка многоязычности (fontspec подгружается автоматически)
+  \setmainlanguage[babelshorthands=true]{russian} % Язык по-умолчанию русский с поддержкой приятных команд пакета babel
+  \setotherlanguage{english}                      % Дополнительный язык = английский (в американской вариации по-умолчанию)
+  % Семейство шрифтов Liberation (https://pagure.io/liberation-fonts)
+  \setmonofont{LiberationMono}[Scale=0.87]        % моноширинный шрифт
+  \newfontfamily\cyrillicfonttt{LiberationMono}[  % моноширинный шрифт для кириллицы
+    Scale=0.87]
+  \defaultfontfeatures{Ligatures=TeX}             % стандартные лигатуры TeX, замены нескольких дефисов на тире и т. п. Настройки моноширинного шрифта должны идти до этой строки, чтобы при врезках кода программ в коде не применялись лигатуры и замены дефисов
+  \setmainfont{LiberationSerif}                   % Шрифт с засечками
+  \newfontfamily\cyrillicfont{LiberationSerif}    % Шрифт с засечками для кириллицы
+  \setsansfont{LiberationSans}                    % Шрифт без засечек
+  \newfontfamily\cyrillicfontsf{LiberationSans}   % Шрифт без засечек для кириллицы
+
+  % fake small capitals
+  % https://tex.stackexchange.com/questions/55664/fake-small-caps-with-xetex-fontspec
+  \makeatletter
+  \newlength\fake@f
+  \newlength\fake@c
+  \def\textsc#1{%
+    \begingroup%
+    \xdef\fake@name{\csname\curr@fontshape/\f@size\endcsname}%
+    \fontsize{\fontdimen8\fake@name}{\baselineskip}\selectfont%
+    \MakeUppercase{#1}%
+    \endgroup%
+    }
+  \makeatother
+  % \renewcommand{\textsc}[1]{\fauxschelper#1 \relax\relax}
+  % \def\fauxschelper#1 #2\relax{%
+  %   \fauxschelphelp#1\relax\relax%
+  %   \if\relax#2\relax\else\ \fauxschelper#2\relax\fi%
+  %   }
+  % \def\Hscale{.83}\def\Vscale{.72}\def\Cscale{1.00}
+  % \def\fauxschelphelp#1#2\relax{%
+  %   \ifnum`#1>``\ifnum`#1<`\{\scalebox{\Hscale}[\Vscale]{\uppercase{#1}}\else%
+  %   \scalebox{\Cscale}[1]{#1}\fi\else\scalebox{\Cscale}[1]{#1}\fi%
+  %   \ifx\relax#2\relax\else\fauxschelphelp#2\relax\fi}
+
+\else
+  \usepackage[T2A]{fontenc}           % кодировка
+  \usepackage[utf8]{inputenc}         % Кодировка utf8
+  \usepackage[english,russian]{babel} % Языки: русский, английский
+\fi
+
+\usepackage[colorlinks=true,unicode=true]{hyperref}
+
+%%% Other packages %%%
+\usepackage{xspace} % пробелы после предопределённых команд
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage{cmap}
+\usepackage{array}
+\usepackage{braket}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{compatibility=false}
+\usepackage{subcaption}
+\usepackage{indentfirst}
+\usepackage{hyphenat}
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{pdfpages}
+\usepackage[normalem]{ulem}
+
+\graphicspath{{img/}} % Пути к изображениям
+
+\usepackage{multirow}
+%%% Toc %%%
+% \setcounter{tocdepth}{4}
+% \setcounter{secnumdepth}{4}
+
+%%% Title %%%
+% \usepackage{titlesec}
+% \titleformat{\section}
+% {\normalfont\large\bfseries}{\thesection}{1em}{}
+
+%%% Setup bibliography %%%
+
+\usepackage{csquotes} % biblatex рекомендует его подключать. Пакет для оформления сложных блоков цитирования.
+%%% Загрузка пакета с основными настройками %%%
+\makeatletter
+\usepackage[%
+backend=biber,% движок
+bibencoding=utf8,% кодировка bib файла
+sorting=none,% настройка сортировки списка литературы
+style=gost-numeric,% стиль цитирования и библиографии (по ГОСТ)
+language=autobib,% получение языка из babel/polyglossia, default: autobib % если ставить autocite или auto, то цитаты в тексте с указанием страницы, получат указание страницы на языке оригинала
+autolang=other,% многоязычная библиография
+clearlang=true,% внутренний сброс поля language, если он совпадает с языком из babel/polyglossia
+defernumbers=true,% нумерация проставляется после двух компиляций, зато позволяет выцеплять библиографию по ключевым словам и нумеровать не из большего списка
+sortcites=true,% сортировать номера затекстовых ссылок при цитировании (если в квадратных скобках несколько ссылок, то отображаться будут отсортированно, а не абы как)
+movenames=false, % опция разрешает или запрещает перемещение имён в область сведений об ответственности, если количество имён больше трёх.
+% не менять местами заголовок и список авторов, если авторов больше четырех
+minnames=3, % сокращение списка имён
+maxnames=4, % сокращение списка имён
+doi=true,% Показывать или нет ссылки на DOI
+isbn=false,% Показывать или нет ISBN, ISSN, ISRN
+url=false,
+eprint=true,
+backref=true
+]{biblatex}[2016/09/17]
+%]{biblatex}
+%\ltx@iffilelater{biblatex-gost.def}{2017/05/03}%
+{\toggletrue{bbx:gostbibliography}%
+\renewcommand*{\revsdnamepunct}{\addcomma}}{}
+\makeatother
+
+\DefineBibliographyStrings{english}{docthesis = {dissertation}}
+\DefineBibliographyStrings{russian}{docthesis = {диссертация}}
+
+% Custom backref Text
+%https://tex.stackexchange.com/questions/196015/custom-backref-text
+\DefineBibliographyStrings{english}{
+  backrefpage  = {Цит. на с.\adddot},
+  backrefpages = {Цит. на с.\adddot},
+}
+\DefineBibliographyStrings{russian}{
+  backrefpage  = {Цит. на с.\adddot},
+  backrefpages = {Цит. на с.\adddot},
+}
+\ifxetex
+\else
+% Исправление случая неподдержки знака номера в pdflatex
+    \DefineBibliographyStrings{russian}{number={\textnumero}}
+\fi
+
+% разделитель ; для ссылок
+\DeclareMultiCiteCommand{\multicites}[\mkbibbrackets]{\cite}{\addsemicolon\space}
+
+%%% Colors %%%
+\usepackage[dvipsnames]{xcolor}
+
+\definecolor{linkcolor}{rgb}{0.08, 0.38, 0.74}
+\definecolor{citecolor}{rgb}{0.18, 0.55, 0.34}
+\definecolor{urlcolor}{rgb}{0.03, 0.57, 0.82}
+
+\hypersetup{
+    linktocpage=true,           % ссылки с номера страницы в оглавлении, списке таблиц и списке рисунков
+    colorlinks,                 % ссылки отображаются раскрашенным текстом, а не раскрашенным прямоугольником, вокруг текста
+    linkcolor={linkcolor},      % цвет ссылок типа ref, eqref и подобных
+    citecolor={citecolor},      % цвет ссылок-цитат
+    urlcolor={urlcolor},        % цвет гиперссылок
+}
+
+%%% Users commands %%%
+
+\def\stella{\code{STEL\-LA}\xspace}
+\def\millimetron{\code{Миллиметрон}\xspace}
+\def\mesa{\code{ME\-SA}\xspace}
+\def\supremna{\code{SUP\-REM\-NA}\xspace}
+
+\def\araa{Annual Review of Astronomy and Astrophysics}
+\def\apj{The Astrophysical Journal}
+\def\apjl{The Astrophysical Journal Letters}
+\def\apjs{The Astrophysical Journal Supplement}
+\def\apss{Astrophysics and Space Science}
+\def\azh{Астрон. Журнал}
+\def\pazh{Письма в Астрон. Журнал}
+\def\pasp{Pub. Astron. Soc. Pacific}
+\def\pasa{Pub. Astron. Soc. Australia}
+\def\prl{Phys. Rev. Lett}
+\def\pre{Phys. Rev. E}
+\def\sovast{Soviet Astronomy}
+\def\aa{Astronomy and Astrophysics}
+\def\aapr{Astronomy and Astrophysics Reviews}
+\def\aj{Astronomical Journal}
+\def\mnras{MNRAS}
+\def\nat{Nature}
+\def\ssr{Space Science Reviews}
+\def\prd{Phys. Rev. D}
+\def\jqsrt{Journal of Quantitative Spectroscopy and Radiative Transfer}
+
+\DeclareRobustCommand{\todo}{\textcolor{red}}
+
+\newcommand{\code}[1]{\texttt{#1}}
+% \newcommand{\code}[1]{\textsc{#1}}
+\newcommand\vecx[1]{\ifstrequal{#1}{0}{\ensuremath{\mathbf{0}}}{\ensuremath{\boldsymbol{#1}}}}
+
+\newcommand\vecxu{\vecx{u}}
+
+
+\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+
+\newcommand{\pb}[1]{\textbf{\color{magenta}PB: #1}}
+%\newcommand{\pbc}[2]{\textbf{\stkout{#1} \pb{#2}}}
+\newcommand{\pbc}[2]{\textbf{\stkout{#1}\color{magenta}#2}}
+\newcommand{\pbd}[1]{\textbf{\stkout{#1}}}
+
+\newcommand{\iz}[1]{\textbf{\color{orange}IZ: #1}}
+
+\newcommand\nifsx{$^{56}$Ni\xspace}
+\newcommand\cofsx{$^{56}$Co\xspace}
+\newcommand\fefsx{$^{56}$Fe\xspace}
+\newcommand{\rsun}{\ensuremath{R_\odot}\xspace}
+\newcommand{\msun}{\ensuremath{M_\odot}}
+
+% 
+\def\rej{\ensuremath{R_{\rm ej}}}
+\def\mej{\ensuremath{M_{\rm ej}}}
+\def\renv{\ensuremath{R_{\rm env}}}
+\def\menv{\ensuremath{M_{\rm env}}}
+
+\newcommand\snia{SN\,Ia\xspace}
+\newcommand\snib{SN\,Ib\xspace}
+\newcommand\snic{SN\,Ic\xspace}
+\newcommand\sniib{SN\,IIb\xspace}
+\newcommand\sniip{SN\,IIP\xspace}

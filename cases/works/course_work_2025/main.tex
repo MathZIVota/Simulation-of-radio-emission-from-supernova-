@@ -1,0 +1,86 @@
+% arara: pdflatex
+% arara: biber
+% arara: pdflatex
+% arara: pdflatex x
+% Chandra Images by Category: Supernovas & Supernova Remnants
+% https://chandra.harvard.edu/photo/category/snr.html
+\documentclass[a4paper,12pt]{article}
+
+%\usepackage[utf8]{inputenc} % Требуется для отображения русских символов
+%\usepackage[T2A]{fontenc} % Требуется для отображения русских символов
+%\usepackage[russian, english]{babel} % Настройки языка для русского
+%\usepackage{amsmath}
+
+%\usepackage{graphicx}
+%\usepackage{hyperref}
+%\usepackage{biblatex}
+
+%Для заметок
+%\usepackage{xspace} % пробелы после предопределённых команд
+%\usepackage{color}
+%\newcommand{\pb}[1]{\textbf{\color{magenta}PB: #1}}
+%\newcommand{\pbc}[2]{\textbf{\stkout{#1} \pb{#2}}}
+%\newcommand{\pbc}[2]{\textbf{\stkout{#1}\color{magenta}#2}}
+%\newcommand{\pbd}[1]{\textbf{\stkout{#1}}}
+
+%\newcommand{\iz}[1]{\textbf{\color{orange}IZ: #1}}
+
+\input{head}
+%%% Добавить библиографию
+\addbibresource{refs_astro.bib}
+\addbibresource{refs_hd.bib}
+
+\begin{document}
+
+\begin{titlepage} 
+    \begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Sketch_MSU.png}
+	\label{fig:Sketch_MSU}
+    \end{figure}
+    \begin{center}
+    \textbf{\Large  МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ \\
+ИМЕНИ М. В. ЛОМОНОСОВА} 
+    \end{center}
+    \begin{center}
+    \end{center}
+    \begin{center}
+     \text{\Large Факультет космических исследований}
+    \end{center}
+    \begin{center}
+    \end{center}
+    \begin{center}
+    \end{center}
+    \begin{center}
+    \text{\Large Курсовая работа\newline}
+    \text{\Large 
+    Моделирование радиоизлучения от сверхновых}
+    \end{center}
+    \vspace{4cm}
+    \begin{flushright}
+    Выполнил студент 4 курса специалитета Заворохин Илья Владимирович\\
+    Научный руководитель: к. ф-м. н. Бакланов Петр Валерьевич
+    \end{flushright}
+    \vspace{1cm}
+    \begin{center}
+        Москва, 2024
+    \end{center}
+\end{titlepage} 
+
+
+\date{\today}
+\tableofcontents
+\newpage
+
+\section{Введение}
+    Целью данной работы является построить кривую блеска радиоизлучения для сверхновой 2 типа(\iz{выбрать конкретную сверхновую}), в естественном приближении степенного распределения плотноcти (по Шевалье, \cite{Chevalier1982}). В работе применяется простой численный метод Годунова для расчетов газодинамических параметров. Расчет радиоизлучения производится по известным формулам, приведенным в работе \cite{Moriya2019Preprint}. Подробный разбор этих формул будет привден ниже (\iz{Если будет, указать section}).
+
+\section{1}
+\section{2}
+\section{3}
+\section{Заключение}
+%\appendix*{}
+\clearpage
+\printbibliography
+
+\end{document}
