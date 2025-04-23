@@ -1,0 +1,127 @@
+% arara: pdflatex
+% arara: biber
+% arara: pdflatex
+% arara: pdflatex
+% arara: clean: { files: [numeric_methods_hd.log,numeric_methods_hd.aux,numeric_methods_hd.blg,numeric_methods_hd.bbl,numeric_methods_hd.bcf,numeric_methods_hd.toc,numeric_methods_hd.run.xml,numeric_methods_hd.out ] }
+% zsh> setopt no_nomatch
+
+% Chandra Images by Category: Supernovas & Supernova Remnants
+% https://chandra.harvard.edu/photo/category/snr.html
+
+\documentclass[a4paper,12pt]{extarticle}
+\usepackage[T2A]{fontenc}           % Кодировка (для pdflatex)
+\usepackage[utf8]{inputenc}         % Кодировка utf8 (для pdflatex)
+\usepackage[english,russian]{babel} % Языки: русский, английский
+\input{head}
+
+
+\makeatletter
+\@ifundefined{c@basement}{
+  \newcounter{basement}
+  \setcounter{basement}{0} % 0 --- hide basement;
+                            % 1 --- show basement
+}{}
+\makeatother
+
+\hyphenation{
+  smooth-ed
+  par-tic-le
+  hy-dro-dy-nam-ics
+}
+
+
+%%% Add bibliography
+\addbibresource{refs_hd_gydro.bib}
+\addbibresource{refs_hd.bib}
+\begin{document}
+
+%%% article title
+\title{\large
+ Заметки по численным методам, применяемым в задачах газодинамики при сильных разрывах
+}
+
+\author{Илья~Заворохин, П.В.~Бакланов}
+
+\date{\today}
+
+\maketitle
+
+\tableofcontents
+
+
+%%%%% BEGIN
+%------------------------------------------
+\section*{TODO}
+
+\begin{enumerate}
+    \item описать ключевые моменты по книге \cite{MolchanovGasdynamics2013}
+    \item 1. Вид системы для применения чмов
+    \item 2. Свойства численных схем, за которыми стоит следить
+    \item 3. Сами численные схемы: РК4, Годунова, ...
+    \item найти подходящие тесты
+\end{enumerate}
+
+%------------------------------------------
+\newpage
+\section{Введение}
+    Цель работы - применение классических разностных методов (в частности метод Рунге Кутты 4-го порядка) к поиску приближённых решений гиперболических систем при наличии разрывов в начальных параметрах, знакомство с классическим методом Годунова и производными от него методами. Повышение точности численного решения применением схем годуновского типа к исходным методам (в частности, пересчет значений потоков по Годунову). Написание программной реализации этих методов.
+
+\section{Исходная система}
+\subsection{В общем виде}
+    Полная классическая система газодинамики записывается в недивергентном виде:
+    \begin{align} 
+        &\frac{\partial \rho}{\partial t} + div(\rho \vecxu) = 0 \label{eq:continuity}\\
+        %
+        &\frac{\partial \vecxu}{\partial t} + \left(\vecxu \nabla \right)\vecxu = -\frac{1}{\rho}\nabla P  \label{eq:euler}	\\
+        %
+        &\frac{\partial }{\partial t}\rho E + div(\rho \vecxu (w+\frac{\vecxu^2}{2})) = 0  \label{eq:energy} \\
+            %
+        &p = p(\rho,e)
+    \end{align}
+    Используемые обозначения: $\rho$ - плотность, $u$ -скорость, $p$ -давление, $E = e + \frac{\vecxu^2}{2}$ - полная удельная энергия, $e$ - удельная внутренняя энергия, $w$ - удельная энтальпия.
+    В таком виде она представлена в большинстве учебников по теории газовой динамики, например в \cite{godunov1976}. 
+    Однако для применения численных методов ее преобразуют к другому виду. Для этого уравнение непрерывности(\ref{eq:continuity}) cначала умножается на U, а затем на E. Полученные уравнения складываются соответсвенно с уравением Эйлера (\ref{eq:euler}) и уравнением для энергии (\ref{eq:energy}). Учёт формул производной произведения позволяет привести эти уравнения к консервативному виду. Подобное преобразование указано например в \cite{MolchanovGasdynamics2013}, поэтому здесь приведем лишь полученную в результате дивергентную форму системы уравнений газовой динамики: 
+    \begin{align}
+        \frac{\partial \rho}{\partial t} + \frac{\partial (\rho u)}{\partial x} &= 0 \\
+        \frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} &= - \frac{1}{\rho} \frac{\partial P}{\partial x} \\
+        \frac{\partial E}{\partial t} + \frac{\partial (u(E + P))}{\partial x} &= 0 \\
+        p &= p(\rho, e)
+    \end{align}
+
+    Во многих естественных задачах можно считать, что пространственная размерность задачи равна 1. Поэтому далее приводится вид системы для такого случая. 
+\subsection{Одномерный вид}
+    Если пространственная одномерность связана с одной из декартовых осей, то системы принимает вид:
+    \begin{align}
+        \frac{\partial \rho}{\partial t} + \frac{\partial (\rho u)}{\partial x} &= 0
+    \end{align}
+
+\subsection{Cферически симметричный вид}
+    В некоторых задачах (в особенности при моделировании взрывов, в том числе вспышек сверхновых) возможно сведение задачи к сферически симметричному случаю. В этом случае пространственной координатой будет радиальное расстояние от центра сферы. В таком случае система примет вид:
+    \begin{align}
+        \frac{\partial \rho}{\partial t} + \frac{\partial (\rho u)}{\partial x} &= 0
+    \end{align}
+
+\section{Основные свойства численных схем}
+\subsection{Метод контрольного ообъёма}
+\subsection{Cходимость, порядок точности}
+\subsection{Невязка, аппроксимация}
+\subsection{Устойчивость}
+\subsection{Требования для численных методов в случае решения задач газодинамики}
+
+
+\section{Численные методы}
+\subsection{Метод Рунге-Кутты 4-го порядка}
+\subsection{Базовый метод Годунова}
+\subsection{Методы годуновского типа:       Рое, WENO,....}
+
+\section{Тесты}
+\subsection{Cода}
+\subsection{Тест с наличием скоростей}
+\subsection{Тест с сильным разрывом (1000 и более раз)}
+
+\section{Заключение}
+
+%-------------------------------------------
+\clearpage
+\printbibliography
+\end{document}
