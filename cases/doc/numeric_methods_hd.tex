@@ -78,41 +78,45 @@
             %
         &p = p(\rho,e)
     \end{align}
-    Используемые обозначения: $\rho$ - плотность, $u$ -скорость, $p$ -давление, $E = e + \frac{\vecxu^2}{2}$ - полная удельная энергия, $e$ - удельная внутренняя энергия, $w$ - удельная энтальпия.
+    Используемые обозначения: $\rho$ - плотность, $u$ -скорость, $p$ -давление, $E = e + \frac{\vecxu^2}{2}$ - полная удельная (на единицу массы) энергия, $e$ - удельная (на единицу массы)внутренняя энергия, $w$ - удельная (на единицу массы) энтальпия.
     В таком виде она представлена в большинстве учебников по теории газовой динамики, например в \cite{godunov1976}. 
     Однако для применения численных методов ее преобразуют к другому виду. Для этого уравнение непрерывности(\ref{eq:continuity}) cначала умножается на U, а затем на E. Полученные уравнения складываются соответсвенно с уравением Эйлера (\ref{eq:euler}) и уравнением для энергии (\ref{eq:energy}). Учёт формул производной произведения позволяет привести эти уравнения к консервативному виду. Подобное преобразование указано например в \cite{MolchanovGasdynamics2013}, поэтому здесь приведем лишь полученную в результате дивергентную форму системы уравнений газовой динамики: 
     \begin{align}
         \frac{\partial \rho}{\partial t} + \frac{\partial (\rho u)}{\partial x} &= 0 \\
         \frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} &= - \frac{1}{\rho} \frac{\partial P}{\partial x} \\
-        \frac{\partial E}{\partial t} + \frac{\partial (u(E + P))}{\partial x} &= 0 \\
+        \frac{\partial \rho E}{\partial t} + \frac{\partial (\rho u(E + P))}{\partial x} &= 0 \\
         p &= p(\rho, e)
     \end{align}
-
+    
     Во многих естественных задачах можно считать, что пространственная размерность задачи равна 1. Поэтому далее приводится вид системы для такого случая. 
 \subsection{Одномерный вид}
     Если пространственная одномерность связана с одной из декартовых осей, то системы принимает вид:
     \begin{align}
-        \frac{\partial \rho}{\partial t} + \frac{\partial (\rho u)}{\partial x} &= 0
+        \frac{\partial \rho}{\partial t} + \frac{\partial (\rho u)}{\partial x} &= 0 \\
+        \frac{\partial (\rho u)}{\partial t} + \frac{\partial (\rho u^2 + p)}{\partial x} &= 0 \\
+        \frac{ \partial (\rho E)}{\partial t} + \frac{\partial \rho (u(E+p))}{\partial x} &= 0
     \end{align}
 
 \subsection{Cферически симметричный вид}
     В некоторых задачах (в особенности при моделировании взрывов, в том числе вспышек сверхновых) возможно сведение задачи к сферически симметричному случаю. В этом случае пространственной координатой будет радиальное расстояние от центра сферы. В таком случае система примет вид:
     \begin{align}
-        \frac{\partial \rho}{\partial t} + \frac{\partial (\rho u)}{\partial x} &= 0
+        \frac{\partial \rho}{\partial t} + \frac{1}{r^2}\frac{\partial (r^2 (\rho u))}{\partial r} &= 0 \\
+        \frac{\partial \rho u}{\partial t} + \frac{1}{r^2}\frac{\partial (r^2(\rho u^2+p))}{\partial r} &= 2\frac{p}{r} \\
+        \frac{\partial (\rho E)}{\partial t} + \frac{1}{r^2}\frac{\partial(r^2 \rho u( E + p))}{\partial r} &= 0
     \end{align}
 
 \section{Основные свойства численных схем}
-\subsection{Метод контрольного ообъёма}
+\subsection{Метод контрольного объёма}
 \subsection{Cходимость, порядок точности}
 \subsection{Невязка, аппроксимация}
 \subsection{Устойчивость}
 \subsection{Требования для численных методов в случае решения задач газодинамики}
-
+\subsection{Типы граничных условий}
 
 \section{Численные методы}
 \subsection{Метод Рунге-Кутты 4-го порядка}
 \subsection{Базовый метод Годунова}
-\subsection{Методы годуновского типа:       Рое, WENO,....}
+\subsection{Методы годуновского типа: Рое, WENO,....}
 
 \section{Тесты}
 \subsection{Cода}
